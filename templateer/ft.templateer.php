@@ -28,14 +28,19 @@ class  templateer_ft extends EE_Fieldtype {
 
 
 	// --------------------------------------------------------------------
-
+	// Displays the field in the publish form.
 	function display_field($data)
 	{
-		$this->_field_includes();
+		// Load Language
 		$this->EE->lang->loadfile('templateer');
+
+		// Load up required includes
+		$this->_field_includes();
+
+		// Create field HTML
 		$html = form_dropdown($this->field_name ,$this->get_templates($this->get_settings_prop('templates')), $data);
 
-		$this->EE->cp->add_to_head('
+		$this->EE->cp->add_to_foot('
 			<script>
 				$(document).ready(function() {
 					var $elm = $("#sub_hold_field_'. $this->field_id . ' select");
@@ -61,33 +66,23 @@ class  templateer_ft extends EE_Fieldtype {
 			$this->EE->load->library('javascript');
 /* 			$this->EE->cp->load_package_js('templateer'); */
 
-			$this->EE->cp->add_to_head('
-				<style>
-
-				</style>
-
-
-				<script>
-
-				</script>
-				');
-
 			$this->cache['included_configs'] = array();
 		}
 	}
 
 
 	// --------------------------------------------------------------------
-
+	// Display fieldtype settings
 	function display_settings($data)
 	{
 		$this->EE->lang->loadfile('templateer');
+
 		$this->settings = array_merge($this->settings, $data);
 
 		$template_ary = $this->get_templates();
 
 		$this->EE->table->add_row(
-			'Templates to include in list:', form_multiselect('templates[]', $template_ary, $this->settings['templates'])
+			'Templates to include in list:', form_multiselect('templates[]', $template_ary, $this->settings['templates'], "style='height:200px;width:200px;'")
 		);
 
 	}
@@ -106,6 +101,7 @@ class  templateer_ft extends EE_Fieldtype {
 										and t.site_id = 1" . $where);
 
 		$ary = array();
+
 		if($query->num_rows() > 0)
 		{
 			$results = $query->result();
