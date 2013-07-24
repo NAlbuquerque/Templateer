@@ -98,7 +98,8 @@ class  templateer_ft extends EE_Fieldtype {
 										from exp_templates t
 										left join exp_template_groups t_groups on t.group_id = t_groups.group_id
 										where t.template_type = 'webpage'
-										and t.site_id = 1" . $where);
+										and t.site_id = 1
+										order by group_name" . $where);
 
 		$ary = array();
 
